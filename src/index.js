@@ -13,6 +13,7 @@ require("dotenv").config();
 // Module imports
 const express = require("express");
 const bodyParser = require("body-parser");
+const path = require("path");
 
 // Create server
 const app = express();
@@ -21,6 +22,10 @@ const app = express();
 // Body parser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
+
+// Load routes
+
+require(path.join(__dirname, "./routes/catch"))(app); // Catch all route
 
 // Start server on port specified in .env file
 app.listen(process.env.PORT, () => {
