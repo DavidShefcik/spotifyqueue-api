@@ -8,6 +8,6 @@
 // Route
 module.exports = app => {
     app.get("*", (request, response) => {
-        response.status(404).send({"error": "404"});
+        return response.status(404).send({"error": "404"});
     });
 };

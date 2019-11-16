@@ -24,6 +24,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
 // Load routes
+require(path.join(__dirname, "./routes/auth/callback"))(app);
 require(path.join(__dirname, "./routes/auth/url"))(app);
 require(path.join(__dirname, "./routes/catch"))(app); // Catch all route
 
