@@ -12,12 +12,15 @@ require("dotenv").config();
 
 // Module imports
 const express = require("express");
+const bodyParser = require("body-parser");
 
 // Create server
 const app = express();
 
 // Add/Configure middleware
-// TODO
+// Body parser
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
 
 // Start server on port specified in .env file
 app.listen(process.env.PORT, () => {
