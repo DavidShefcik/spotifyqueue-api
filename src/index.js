@@ -21,7 +21,7 @@ const app = express();
 // Add/Configure middleware
 // Body parser
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({"extended": false}));
 
 // Load routes
 require(path.join(__dirname, "./routes/auth/callback"))(app);
