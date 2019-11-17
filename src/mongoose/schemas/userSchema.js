@@ -11,8 +11,9 @@ const mongoose = require("mongoose");
 // User schema
 const userSchema = new mongoose.Schema({
     userid: "string",
+    username: "string",
     access_token: "string",
-    refresh_token: "string"
+    refresh_token: "string",
 });
 
 // Export

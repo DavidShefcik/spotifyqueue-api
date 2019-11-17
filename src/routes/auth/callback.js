@@ -13,6 +13,9 @@ const qs = require("querystring");
 module.exports = app => {
     app.get("/auth/callback", (request, response) => {
         let code = request.query.code;
+        let accessToken;
+        let refreshToken;
+        let user;
         if(code === undefined) {
             return response.status(400).send({"error": "denied"});
         } else {
@@ -31,8 +34,17 @@ module.exports = app => {
                 qs.stringify(data),
                 { headers: headers }
             ).then(res => {
-                console.log(res["data"]);
-                return response.status(200).send({"content": "Callback!"});
+                accessToken = res["data"]["access_token"];
+                refreshToken = res["data"]["refresh_token"];
+
+                axios.get("https://api.spotify.com/v1/me", {headers: {"Authorization": `Bearer ${accessToken}`}}).then(r => {
+                    return response.status(200).send(r["data"]);
+                }).catch(error => {
+                    if(process.env.PRODUCTION === "false") {
+                        console.log(error);
+                    }
+                    return response.status(400).send({"error": "token"});
+                });
             }).catch(error => {
                 if(process.env.PRODUCTION === "false") {
                     console.log(error);
