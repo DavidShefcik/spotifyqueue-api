@@ -16,4 +16,4 @@ const userSchema = require(path.join(__dirname, "../schemas/userSchema"));
 const userModel = mongoose.model("users", userSchema);
 
 // Export
-export default userModel;
+module.exports = userModel;

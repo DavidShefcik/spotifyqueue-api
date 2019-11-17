@@ -14,7 +14,8 @@ const userSchema = new mongoose.Schema({
     username: "string",
     access_token: "string",
     refresh_token: "string",
+    token: "string"
 });
 
 // Export
-export default userSchema;
+module.exports = userSchema;

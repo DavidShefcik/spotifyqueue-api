@@ -8,6 +8,10 @@
 // Module imports
 const axios = require("axios");
 const qs = require("querystring");
+const path = require("path");
+
+// Model imports
+const userModel = require(path.join(__dirname, "../../mongoose/models/userModel"));
 
 // Route
 module.exports = app => {
@@ -15,6 +19,7 @@ module.exports = app => {
         let code = request.query.code;
         let accessToken;
         let refreshToken;
+        let id;
         let user;
         if(code === undefined) {
             return response.status(400).send({"error": "denied"});
@@ -38,7 +43,26 @@ module.exports = app => {
                 refreshToken = res["data"]["refresh_token"];
 
                 axios.get("https://api.spotify.com/v1/me", {headers: {"Authorization": `Bearer ${accessToken}`}}).then(r => {
-                    return response.status(200).send(r["data"]);
+                    let token = require("crypto").randomBytes(64).toString('hex');
+                    user = {
+                        "userid": r["data"]["id"],
+                        "username": r["data"]["display_name"],
+                        "access_token": accessToken,
+                        "refresh_token": refreshToken,
+                        "token": token
+                    };
+                    userModel.findOneAndUpdate({"userid": user["userid"]}, user, {new: true, upsert: true, useFindAndModify: false}).then(doc => {
+                        let returnUser = {
+                            "username": doc["username"],
+                            "token": doc["token"]
+                        }
+                        return response.status(200).send({"user": returnUser});
+                    }).catch(error => {
+                        if(process.env.PRODUCTION === "false") {
+                            console.log(error);
+                        }
+                        return response.status(400).send({"error": "db"});
+                    });
                 }).catch(error => {
                     if(process.env.PRODUCTION === "false") {
                         console.log(error);

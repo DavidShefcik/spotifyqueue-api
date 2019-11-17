@@ -14,6 +14,10 @@ require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
+const mongoose = require("mongoose");
+
+// Mongoose connect
+mongoose.connect(process.env.MONGO_DB_CONNECTION_STRING, {useNewUrlParser: true, useUnifiedTopology: true});
 
 // Create server
 const app = express();
