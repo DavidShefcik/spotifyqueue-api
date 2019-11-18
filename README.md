@@ -1,1 +1,1 @@
-# Spotify Queue API Authentication by David Shefcik
+# Spotify Queue API by David Shefcik
