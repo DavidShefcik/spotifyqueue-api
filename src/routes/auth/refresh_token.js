@@ -1,7 +1,7 @@
 /*
 * Author: David Shefcik
 * Created: 11/16/19
-* Project | File: Spotify Queue Authentication API | src/routes/auth/refresh_token.js
+* Project | File: Spotify Queue API | src/routes/auth/refresh_token.js
 * Purpose: The route to get a new Spotify access token when passing it a user's token.
 */
 

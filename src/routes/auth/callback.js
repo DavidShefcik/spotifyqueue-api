@@ -1,7 +1,7 @@
 /*
 * Author: David Shefcik
 * Created: 11/16/19
-* Project | File: Spotify Queue Authentication API | src/routes/auth/callback.js
+* Project | File: Spotify Queue API | src/routes/auth/callback.js
 * Purpose: The route to handle to response from Spotify after the user goes through the OAuth consent page.
 */
 
@@ -21,6 +21,7 @@ module.exports = app => {
         let refreshToken;
         let id;
         let user;
+        let returnUser;
         if(code === undefined) {
             return response.status(400).send({"error": "denied"});
         } else {
@@ -52,7 +53,7 @@ module.exports = app => {
                         "token": token
                     };
                     userModel.findOneAndUpdate({"userid": user["userid"]}, user, {new: true, upsert: true, useFindAndModify: false}).then(doc => {
-                        let returnUser = {
+                        returnUser = {
                             "username": doc["username"],
                             "token": doc["token"]
                         }

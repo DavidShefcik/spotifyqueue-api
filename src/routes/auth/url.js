@@ -1,7 +1,7 @@
 /*
 * Author: David Shefcik
 * Created: 11/16/19
-* Project | File: Spotify Queue Authentication API | src/routes/auth/url.js
+* Project | File: Spotify Queue API | src/routes/auth/url.js
 * Purpose: The route to send the Spotify login url.
 */
 

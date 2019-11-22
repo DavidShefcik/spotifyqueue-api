@@ -1,7 +1,7 @@
 /*
 * Author: David Shefcik
 * Created: 11/16/19
-* Project | File: Spotify Queue Authentication API | src/routes/catch.js
+* Project | File: Spotify Queue API | src/routes/catch.js
 * Purpose: The catch all route.
 */
 
