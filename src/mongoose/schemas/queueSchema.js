@@ -14,7 +14,13 @@ const queueSchema = new mongoose.Schema({
   ownerid: 'string',
   code: 'string',
   memberids: ['string'],
-  songs: ['string']
+  songs: [
+    {
+      addedByID: 'string',
+      uri: 'string',
+      id: 'string'
+    }
+  ]
 })
 
 // Export
