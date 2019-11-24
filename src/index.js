@@ -38,6 +38,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cors())
 
 // Load routes
+require(path.join(__dirname, './routes/queue/queue'))(app)
 require(path.join(__dirname, './routes/queue/create'))(app)
 require(path.join(__dirname, './routes/users/user'))(app)
 require(path.join(__dirname, './routes/users/me'))(app)

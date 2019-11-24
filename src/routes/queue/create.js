@@ -81,7 +81,6 @@ module.exports = app => {
                 useFindAndModify: false
               })
               .then(doc => {
-                console.log(doc)
                 return response.status(200).send({ queueid: queue['queueid'] })
               })
               .catch(error => {
