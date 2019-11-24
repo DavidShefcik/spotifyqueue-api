@@ -35,6 +35,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cors())
 
 // Load routes
+require(path.join(__dirname, './routes/auth/logout'))(app)
 require(path.join(__dirname, './routes/auth/refresh_token'))(app)
 require(path.join(__dirname, './routes/auth/callback'))(app)
 require(path.join(__dirname, './routes/auth/url'))(app)
