@@ -71,7 +71,7 @@ module.exports = app => {
               ownerid: ownerid,
               code: code,
               memberids: [''],
-              songs: [null]
+              songs: []
             }
 
             queueModel
