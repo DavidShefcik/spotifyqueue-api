@@ -22,9 +22,9 @@ module.exports = app => {
     let code = request.body.code
     let accessToken
     let refreshToken
-    let id
     let user
     let returnUser
+    let token
     if (code === undefined) {
       return response.status(400).send({ error: 'denied' })
     } else {
