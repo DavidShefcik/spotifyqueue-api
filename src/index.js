@@ -18,11 +18,14 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 
 // Mongoose connect
-mongoose.connect(process.env.MONGO_DB_CONNECTION_STRING, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-
+mongoose
+  .connect(process.env.MONGO_DB_CONNECTION_STRING, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
+  .catch(error => {
+    console.log('Could not connect to MongoDB!')
+  })
 // Create server
 const app = express()
 
