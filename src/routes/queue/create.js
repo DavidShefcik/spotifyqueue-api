@@ -66,6 +66,7 @@ module.exports = app => {
               })
             } while (codeOpen)
 
+            // TEMP
             queue = {
               queueid: id,
               ownerid: ownerid,
