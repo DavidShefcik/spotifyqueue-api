@@ -31,7 +31,7 @@ module.exports = app => {
     let token = request.headers.token
     let id = request.body.id
     if (token === undefined || id === undefined) {
-      return response.status(401).send({ error: 'authorized' })
+      return response.status(401).send({ error: 'unauthorized' })
     } else {
       queueModel.findOne({ queueid: id }, (error, queue) => {
         if (error) {

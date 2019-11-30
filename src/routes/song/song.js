@@ -71,7 +71,6 @@ module.exports = app => {
                       }
                     )
                     .then(r => {
-                      console.log('Fixed access token')
                       response.redirect(
                         'http://' + process.env.API_URL + '/song/' + id
                       )

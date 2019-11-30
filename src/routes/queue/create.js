@@ -72,7 +72,14 @@ module.exports = app => {
               ownerid: ownerid,
               code: code,
               memberids: [''],
-              songs: []
+              songs: [
+                {
+                  addedByID: 'ieo2yn8d22oa95j8rvme37pgk',
+                  uri:
+                    'https://open.spotify.com/track/6Ray43gNA6LZxareyESwNk?si=C3opfpTRSzKU2HlCrYJznw',
+                  id: '6Ray43gNA6LZxareyESwNk'
+                }
+              ]
             }
 
             queueModel
