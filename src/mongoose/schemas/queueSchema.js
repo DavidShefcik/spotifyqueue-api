@@ -20,7 +20,8 @@ const queueSchema = new mongoose.Schema({
       uri: 'string',
       id: 'string'
     }
-  ]
+  ],
+  playing: 'string'
 })
 
 // Export

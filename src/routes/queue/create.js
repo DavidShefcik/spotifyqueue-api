@@ -7,6 +7,7 @@
 
 // Module imports
 const path = require('path')
+const axios = require('axios');
 
 // Middleware imports
 const requireToken = require(path.join(
@@ -33,6 +34,9 @@ module.exports = app => {
     let code
     let codeOpen = false
     let queue
+    let accessToken
+    let song
+    let playing = false;
     if (token === undefined) {
       return response.status(401).send({ error: 'unauthorized' })
     } else {
@@ -45,6 +49,7 @@ module.exports = app => {
         } else {
           if (user) {
             ownerid = user['userid']
+            accessToken = user['access_token']
             id = require('crypto')
               .randomBytes(64)
               .toString('hex')
@@ -66,36 +71,79 @@ module.exports = app => {
               })
             } while (codeOpen)
 
-            // TEMP
-            queue = {
-              queueid: id,
-              ownerid: ownerid,
-              code: code,
-              memberids: [''],
-              songs: [
-                {
-                  addedByID: 'ieo2yn8d22oa95j8rvme37pgk',
-                  uri:
-                    'https://open.spotify.com/track/6Ray43gNA6LZxareyESwNk?si=C3opfpTRSzKU2HlCrYJznw',
-                  id: '6Ray43gNA6LZxareyESwNk'
-                }
-              ]
-            }
+            song = {};
 
-            queueModel
-              .findOneAndUpdate({ ownerid: ownerid }, queue, {
-                new: true,
-                upsert: true,
-                useFindAndModify: false
+            axios
+              .get('https://api.spotify.com/v1/me/player/currently-playing', {
+                headers: { Authorization: 'Bearer ' + accessToken }
               })
-              .then(doc => {
-                return response.status(200).send({ queueid: queue['queueid'] })
+              .then(res => {
+
+
+                if(res['data']['item'] != undefined) {
+                  song = {
+                      addedByID: ownerid,
+                      uri: res['data']['item']['href'],
+                      id: res['data']['item']['id']
+                  }
+                  playing = res['data']['is_playing']
+                }
+
+                queue = {
+                  queueid: id,
+                  ownerid: ownerid,
+                  code: code,
+                  memberids: [''],
+                  songs: [
+                    song
+                  ],
+                  playing: playing
+                }
+    
+
+                queueModel
+                  .findOneAndUpdate({ ownerid: ownerid }, queue, {
+                    new: true,
+                    upsert: true,
+                    useFindAndModify: false
+                  })
+                  .then(doc => {
+                    return response.status(200).send({ queueid: queue['queueid'] })
+                  })
+                  .catch(error => {
+                    if (process.env.PRODUCTION === 'false') {
+                      console.log(error)
+                    }
+                    return response.status(400).send({ error: 'database' })
+                  })
               })
               .catch(error => {
-                if (process.env.PRODUCTION === 'false') {
-                  console.log(error)
+                if (
+                  error['response']['data']['error']['message'] ===
+                  'The access token expired'
+                ) {
+                  axios
+                    .post(
+                      'http://' + process.env.API_URL + '/auth/refresh',
+                      null,
+                      {
+                        headers: { token: token }
+                      }
+                    )
+                    .then(r => {
+                      response.redirect(
+                        'http://' + process.env.API_URL + '/queue/create'
+                      )
+                    })
+                    .catch(e => {
+                      if (process.env.PRODUCTION === 'false') {
+                        console.log(e)
+                      }
+                      return response.status(400).send()
+                    })
+                } else {
+                  return response.status(400).send()
                 }
-                return response.status(400).send({ error: 'database' })
               })
           } else {
             return response.status(400).send({ error: 'nouser' })

@@ -40,7 +40,8 @@ module.exports = app => {
               ownerid: queue['ownerid'],
               code: queue['code'],
               members: queue['memberids'],
-              songs: queue['songs']
+              songs: queue['songs'],
+              playing: queue['playing']
             }
             return response.status(200).send({ queue: newQueue })
           } else {
